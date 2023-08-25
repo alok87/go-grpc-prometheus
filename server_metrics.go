@@ -2,6 +2,8 @@ package grpc_prometheus
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/grpc-ecosystem/go-grpc-prometheus/packages/grpcstatus"
 	prom "github.com/prometheus/client_golang/prometheus"
 
@@ -103,7 +105,9 @@ func (m *ServerMetrics) Collect(ch chan<- prom.Metric) {
 // UnaryServerInterceptor is a gRPC server-side interceptor that provides Prometheus monitoring for Unary RPCs.
 func (m *ServerMetrics) UnaryServerInterceptor() func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		fmt.Printf("getting monitoring\n")
 		monitor := newServerReporter(m, Unary, info.FullMethod)
+		fmt.Printf("calling monitoring receive message\n")
 		monitor.ReceivedMessage()
 		resp, err := handler(ctx, req)
 		st, _ := grpcstatus.FromError(err)

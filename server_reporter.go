@@ -4,6 +4,7 @@
 package grpc_prometheus
 
 import (
+	"fmt"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -18,6 +19,7 @@ type serverReporter struct {
 }
 
 func newServerReporter(m *ServerMetrics, rpcType grpcType, fullMethod string) *serverReporter {
+	fmt.Printf("m=%+v, rpcType=%+v fulleMethod=%+v", m, rpcType, fullMethod)
 	r := &serverReporter{
 		metrics: m,
 		rpcType: rpcType,
